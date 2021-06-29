@@ -41,9 +41,12 @@ body {
 }
 .list {
   margin-top:30px;
+  margin-left:10px;
   text-align:left;
   padding-left:20px;
   padding-right:20px;
+  border: solid 3px powderblue;
+  width: 500px;
 }
 @keyframes App-logo-spin {
   from {
