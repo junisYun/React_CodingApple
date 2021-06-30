@@ -10,9 +10,14 @@ function App() {
     '쨍쨍한 여름, 여기는 어때?',
     '가을 패션을 뽐내보자!'
   ]);
-  let [LikeCnt, setLikeCnt] = useState(0);
+  let [LikeCnt, setLikeCnt] = useState([0, 0, 0]);
+  let [isViewModal, setIsViewModal] = useState(false);
+  let [titleNum, setTitleNum] = useState(0);
+  let [newTitle, setNewTitle] = useState('');
   const handleLikeUp = () => {
-    setLikeCnt(LikeCnt++);
+    let LikeCntCP = [...LikeCnt];
+    LikeCntCP[0]++;
+    setLikeCnt(LikeCntCP)
   }
 
   const handleChangeTitle = () => {
@@ -23,30 +28,72 @@ function App() {
     alterTitle[0] = '연인과 함께 떠나는 겨울 여행지'
     setTitle(alterTitle)
   }
+  const handleSortTitle = () => {
+    let alterTitle = [...Title];
+    alterTitle.sort();
+    setTitle(alterTitle);
+  }
+  const handleViewModal = () => {
+    let isViewModalCP = isViewModal;
+    setIsViewModal(!isViewModalCP);
+  }
   return (
-    <div className="App">
+    <div>
       <div className="black-nav">
         <div>개발 Blog</div>
       </div>
-
-      <div className="list">
-        {/* onClick 에는 무조건!!! 함수만 들어갈 수 있다. */}
-        <h3>{Title[0]} <span onClick={() => { handleLikeUp }}>👍</span> {LikeCnt} </h3>
-        <button onClick={ handleChangeTitle }>제목변경</button>
-        <p>2021년 2월 17일 발행</p>
+      <div>
+        <button className="sortButton" onClick={handleSortTitle}>제목 정렬</button>
       </div>
 
-      <div className="list">
-        {/* onClick 에는 무조건!!! 함수만 들어갈 수 있다. */}
-        <h3>{Title[1]}</h3>
-        <p>2021년 4월 20일 발행</p>
-      </div>
+      {Title.map(function (element, index) {
+        return (
+          <div className="list" key={ index }>
+            {/* onClick 에는 무조건!!! 함수만 들어갈 수 있다. */}
+            <h3 onClick={ handleViewModal }>{(index + 1) + "번 : "} { element } <span onClick={handleLikeUp}>👍</span> {LikeCnt[index]} </h3>
+            <button onClick={ () => { setTitleNum(index)} }>제목변경</button>
+            <p>2021년 2월 17일 발행</p>
+          </div>
+        );
+      })
+      }
 
 
-      <div className="list">
-        <h3>{Title[2]}</h3>
-        <p>2021년 6월 29일 발행</p>
+      <div>
+        <input placeholder="제목" onChange={ (e) => {
+          setNewTitle(e.target.value);
+        }}></input>
+        <button onClick={ (e) => {
+          setTitle([newTitle, ...Title])
+        } }>발행</button>
       </div>
+      {(isViewModal === true) ? <Modal title={Title} titleNum = {titleNum}></Modal> : null}
+
+
+
+
+    </div>
+  );
+}
+
+// Component 유의사항
+// 1. 컴포넌트 첫 글자는 반드시 대문자로 작성
+// 2. return() 안에 있는건 태그 하나로 묶어야함
+// return(
+//   <div>
+//   </div>
+//   <div>
+//   </div>
+// );  
+// 이거 안됨!
+function Modal(props) {
+  let [detail, setDetail] = useState('');
+  return (
+    <div className="modal">
+      <h2>{ props.title[props.titleNum] }</h2>
+      <p>날짜</p>
+      <input onChange={ (e)  => { setDetail(e.target.value) } }  placeholder="상세내용"></input>
+      <p>{ detail }</p>
     </div>
   );
 }

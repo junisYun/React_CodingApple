@@ -1,6 +1,3 @@
-.App {
-  text-align: center;
-}
 
 .App-logo {
   height: 40vmin;
@@ -47,6 +44,19 @@ body {
   padding-right:20px;
   border: solid 3px powderblue;
   width: 500px;
+}
+.modal {
+  margin-left:10px;
+  margin-top:50px;
+  padding-left:20px;
+  padding-right:20px;
+  border:solid black 3px;
+  width:500px;
+  height:500px;
+}
+.sortButton{
+  margin-left: 10px;
+  margin-top: 10px;
 }
 @keyframes App-logo-spin {
   from {
